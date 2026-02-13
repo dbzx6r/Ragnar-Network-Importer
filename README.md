@@ -36,6 +36,7 @@ No external Python dependencies are required.
 Run the setup wizard:  
 
 python deploy.py --setup  
+  
 The tool will:  
 Ask for remote IP and username  
 Generate an SSH key (if needed)  
@@ -47,6 +48,7 @@ Create your local config.json
 python deploy.py --deploy  
 
 The deploy command will:  
+  
 Parse your potfile  
 Generate new .nmconnection files  
 Skip duplicates automatically  
@@ -70,7 +72,7 @@ wifi-nmconnection-deployer/
 During setup, a config.json file is created locally.  
 
 Example configuration:  
-
+  
 {  
   "remote_ip": "192.168.1.100",  
   "remote_user": "pi",  
@@ -81,13 +83,13 @@ Example configuration:
   
 ⚠️ config.json is ignored by git and should never be committed.  
 🧪 Potfile Format  
-
+  
 The tool expects lines structured like:  
 
 field1:field2:SSID:PASSWORD  
 
 Only the 3rd and 4th fields are used.  
-
+  
 🔐 Security Notes  
 SSH keys are used instead of storing passwords.  
 Sudo configuration is optional and requires user confirmation.  
