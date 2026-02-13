@@ -4,16 +4,16 @@ A cross-platform CLI tool that automates creation and deployment of NetworkManag
 
 This tool is designed for fast, repeatable provisioning of WiFi access points to Linux devices (Raspberry Pi OS, Ubuntu, Debian, etc.) using SSH.
 
-🚀 Features
-✅ Cross-platform (Windows / macOS / Linux)
-✅ Interactive setup wizard
-✅ Automatic SSH key creation & installation
-✅ Optional passwordless sudo configuration
-✅ Batch .nmconnection generation
-✅ Global duplicate detection
-✅ Automatic SSH connection testing
-✅ SCP upload + remote install
-✅ NetworkManager restart & verification
+🚀 Features  
+✅ Cross-platform (Windows / macOS / Linux)  
+✅ Interactive setup wizard  
+✅ Automatic SSH key creation & installation  
+✅ Optional passwordless sudo configuration  
+✅ Batch .nmconnection generation  
+✅ Global duplicate detection  
+✅ Automatic SSH connection testing  
+✅ SCP upload + remote install  
+✅ NetworkManager restart & verification  
 
 ⚙️ Requirements
 Python 3.10+
