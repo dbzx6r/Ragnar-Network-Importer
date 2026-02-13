@@ -25,8 +25,8 @@ SSH access to target device
 
 📦 Installation  
 Clone the repository:  
-git clone https://github.com/YOURNAME/wifi-nmconnection-deployer.git  
-cd wifi-nmconnection-deployer  
+git clone https://github.com/YOURNAME/ragnar-network-importer.git  
+cd ragnar-network-importer
 
 No external Python dependencies are required.  
 
