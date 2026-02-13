@@ -15,111 +15,112 @@ This tool is designed for fast, repeatable provisioning of WiFi access points to
 ✅ SCP upload + remote install  
 ✅ NetworkManager restart & verification  
 
-⚙️ Requirements
-Python 3.10+
-OpenSSH installed on your system
-Target device running NetworkManager
-SSH access to target device
+⚙️ Requirements  
+Python 3.10+  
+OpenSSH installed on your system  
+Target device running NetworkManager  
+SSH access to target device  
 
-📦 Installation
-Clone the repository:
-git clone https://github.com/YOURNAME/wifi-nmconnection-deployer.git
-cd wifi-nmconnection-deployer
+📦 Installation  
+Clone the repository:  
+git clone https://github.com/YOURNAME/wifi-nmconnection-deployer.git  
+cd wifi-nmconnection-deployer  
 
-No external Python dependencies are required.
+No external Python dependencies are required.  
 
-🧭 Quick Start
-1️⃣ First-time Setup
+🧭 Quick Start  
+1️⃣ First-time Setup  
 
-Run the setup wizard:
+Run the setup wizard:  
 
-python deploy.py --setup
-The tool will:
-Ask for remote IP and username
-Generate an SSH key (if needed)
-Install the SSH key on the target device
-Optionally configure passwordless sudo
-Create your local config.json
+python deploy.py --setup  
+The tool will:  
+Ask for remote IP and username  
+Generate an SSH key (if needed)  
+Install the SSH key on the target device  
+Optionally configure passwordless sudo  
+Create your local config.json  
 
-2️⃣ Deploy WiFi Configurations
-python deploy.py --deploy
+2️⃣ Deploy WiFi Configurations  
+python deploy.py --deploy  
 
-The deploy command will:
-Parse your potfile
-Generate new .nmconnection files
-Skip duplicates automatically
-Upload configs via SCP
-Install them on the remote system
-Restart NetworkManager
-Verify connections with nmcli
+The deploy command will:  
+Parse your potfile  
+Generate new .nmconnection files  
+Skip duplicates automatically  
+Upload configs via SCP  
+Install them on the remote system  
+Restart NetworkManager  
+Verify connections with nmcli  
 
-📁 Project Structure
-wifi-nmconnection-deployer/
-│
-├── deploy.py
-├── README.md
-├── LICENSE
-├── .gitignore
-├── config_template.json
-└── examples/
-🔧 Configuration
+📁 Project Structure  
+wifi-nmconnection-deployer/  
+│  
+├── deploy.py  
+├── README.md  
+├── LICENSE  
+├── .gitignore  
+├── config_template.json  
+└── examples/  
 
-During setup, a config.json file is created locally.
+🔧 Configuration  
 
-Example configuration:
+During setup, a config.json file is created locally.  
 
-{
-  "remote_ip": "192.168.1.100",
-  "remote_user": "pi",
-  "potfile_name": "example.potfile",
-  "remote_tmp": "/tmp",
-  "remote_dest": "/etc/NetworkManager/system-connections"
-}
+Example configuration:  
 
-⚠️ config.json is ignored by git and should never be committed.
-🧪 Potfile Format
+{  
+  "remote_ip": "192.168.1.100",  
+  "remote_user": "pi",  
+  "potfile_name": "example.potfile",  
+  "remote_tmp": "/tmp",  
+  "remote_dest": "/etc/NetworkManager/system-connections"  
+}  
+  
+⚠️ config.json is ignored by git and should never be committed.  
+🧪 Potfile Format  
 
-The tool expects lines structured like:
+The tool expects lines structured like:  
 
-field1:field2:SSID:PASSWORD
+field1:field2:SSID:PASSWORD  
 
-Only the 3rd and 4th fields are used.
+Only the 3rd and 4th fields are used.  
 
-🔐 Security Notes
-SSH keys are used instead of storing passwords.
-Sudo configuration is optional and requires user confirmation.
-The tool only grants limited sudo permissions:
-mv, chmod, systemctl
+🔐 Security Notes  
+SSH keys are used instead of storing passwords.  
+Sudo configuration is optional and requires user confirmation.  
+The tool only grants limited sudo permissions:  
+mv, chmod, systemctl  
 
-🖥 Supported Platforms
-
-Windows
-macOS
-Linux
-
-Remote Device:
-
-Raspberry Pi OS
-Ubuntu
-Debian
-
-Any NetworkManager-based system
-
-🧰 Example Workflow
-python deploy.py --setup
-python deploy.py --deploy
-
-That’s it.
-
-🤝 Contributing
-Pull requests are welcome.
-Ideas for improvements:
-
---dry-run mode
-SCP progress bar
-Remote OS auto-detection
-Packaging for PyPI
-
-📜 License
-
-MIT License
+🖥 Supported Platforms  
+  
+Windows  
+macOS  
+Linux  
+  
+Remote Device:  
+  
+Raspberry Pi OS  
+Ubuntu  
+Debian  
+  
+Any NetworkManager-based system  
+  
+🧰 Example Workflow  
+python deploy.py --setup  
+python deploy.py --deploy  
+  
+That’s it.  
+  
+🤝 Contributing  
+Pull requests are welcome.  
+Ideas for improvements:  
+  
+--dry-run mode  
+SCP progress bar  
+Remote OS auto-detection  
+Packaging for PyPI  
+  
+📜 License  
+  
+MIT License  
