@@ -4,6 +4,8 @@ A cross-platform CLI tool that automates creation and deployment of NetworkManag
 
 This tool is designed for fast, repeatable provisioning of WiFi access points to Linux devices (Raspberry Pi OS, Ubuntu, Debian, etc.) using SSH.
 
+⚠️⚠️⚠️THIS IS FOR USE ON YOUR OWN NETWORKS. I AM NOT RESPONSIBLE FOR WHAT YOU DO WITH THIS SCRIPT⚠️⚠️⚠️
+
 🚀 Features  
 ✅ Cross-platform (Windows / macOS / Linux)  
 ✅ Interactive setup wizard  
