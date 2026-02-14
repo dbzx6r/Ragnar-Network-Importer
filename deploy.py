@@ -266,7 +266,7 @@ run(f'ssh {REMOTE_USER}@{REMOTE_IP} "sudo chmod 600 {REMOTE_DEST}/*.nmconnection
 run(f'ssh {REMOTE_USER}@{REMOTE_IP} "nmcli -t -f NAME connection show"')
 
 
-    status("Deployment successful.")
+status("Deployment successful.")
 
 
 # =====================================================
