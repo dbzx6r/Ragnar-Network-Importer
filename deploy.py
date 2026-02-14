@@ -14,6 +14,7 @@ RED = "\033[91m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
+
 # =====================================================
 # OUTPUT HELPERS
 # =====================================================
@@ -31,7 +32,7 @@ def run(cmd, allow_fail=False):
     print(f"\n> {cmd}")
     result = subprocess.run(cmd, shell=True)
     if result.returncode != 0 and not allow_fail:
-        raise RuntimeError("Command failed.")
+        raise RuntimeError(f"Command failed: {cmd}")
 
 
 # =====================================================
@@ -72,19 +73,19 @@ def sudo_already_configured(user, ip):
     return result.returncode == 0
 
 def configure_remote_sudo(user, ip):
-    confirm = input("\nAllow tool to configure passwordless sudo for deployment? (y/n): ").lower()
+    confirm = input("\nAllow tool to configure passwordless sudo? (y/n): ").lower()
     if confirm != "y":
         warn("Skipping sudo configuration.")
         return
 
-    sudo_rule = f"{user} ALL=(ALL) NOPASSWD: /bin/mv, /bin/chmod, /bin/systemctl"
+    sudo_rule = f"{user} ALL=(ALL) NOPASSWD: /bin/mv, /bin/chmod, /usr/bin/nmcli"
 
     remote_cmd = f'''
 echo "{sudo_rule}" | sudo tee /etc/sudoers.d/nmconnection-deployer > /dev/null &&
 sudo chmod 440 /etc/sudoers.d/nmconnection-deployer
 '''
 
-    status("Configuring sudo rules on remote device...")
+    status("Configuring sudo rules...")
     run(f'ssh {user}@{ip} "{remote_cmd}"')
 
 
@@ -161,9 +162,6 @@ def setup():
     else:
         configure_remote_sudo(remote_user, remote_ip)
 
-    status("Testing passwordless sudo...")
-    run(f'ssh {remote_user}@{remote_ip} "sudo -n true"')
-
     status("Setup complete. Run with --deploy next.")
 
 
@@ -174,13 +172,13 @@ def setup():
 def deploy():
     cfg = load_config()
 
-    REMOTE_IP = cfg["remote_ip"]
-    REMOTE_USER = cfg["remote_user"]
+    remote_ip = cfg["remote_ip"]
+    remote_user = cfg["remote_user"]
     input_file = cfg["potfile_name"]
-    REMOTE_TMP = cfg["remote_tmp"]
-    REMOTE_DEST = cfg["remote_dest"]
+    remote_tmp = cfg["remote_tmp"]
+    remote_dest = cfg["remote_dest"]
 
-    ssh_test(REMOTE_USER, REMOTE_IP)
+    ssh_test(remote_user, remote_ip)
 
     if not os.path.exists(input_file):
         error(f"Potfile not found: {input_file}")
@@ -251,22 +249,27 @@ method=auto
         warn("Nothing new to deploy.")
         return
 
-    status("Uploading batch via SCP...")
-    run(f'scp "{date_folder}/*.nmconnection" {REMOTE_USER}@{REMOTE_IP}:{REMOTE_TMP}/')
+    # ==============================
+    # SCP Upload
+    # ==============================
 
-status("Installing configs on remote device...")
+    status("Uploading files via SCP...")
+    run(f'scp {date_folder}/*.nmconnection {remote_user}@{remote_ip}:{remote_tmp}/')
 
-# Move files
-run(f'ssh {REMOTE_USER}@{REMOTE_IP} "sudo mv {REMOTE_TMP}/*.nmconnection {REMOTE_DEST}/"')
+    # ==============================
+    # Remote Installation
+    # ==============================
 
-# Fix permissions
-run(f'ssh {REMOTE_USER}@{REMOTE_IP} "sudo chmod 600 {REMOTE_DEST}/*.nmconnection"')
+    status("Moving files into NetworkManager directory...")
+    run(f'ssh {remote_user}@{remote_ip} "sudo mv {remote_tmp}/*.nmconnection {remote_dest}/"')
 
-# Verify
-run(f'ssh {REMOTE_USER}@{REMOTE_IP} "nmcli -t -f NAME connection show"')
+    status("Fixing permissions...")
+    run(f'ssh {remote_user}@{remote_ip} "sudo chmod 600 {remote_dest}/*.nmconnection"')
 
+    status("Verifying installed connections...")
+    run(f'ssh {remote_user}@{remote_ip} "nmcli -t -f NAME connection show"')
 
-status("Deployment successful.")
+    status("Deployment successful.")
 
 
 # =====================================================
