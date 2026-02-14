@@ -254,17 +254,17 @@ method=auto
     status("Uploading batch via SCP...")
     run(f'scp "{date_folder}/*.nmconnection" {REMOTE_USER}@{REMOTE_IP}:{REMOTE_TMP}/')
 
-    status("Installing configs on remote device...")
+status("Installing configs on remote device...")
 
-    remote_script = f"""
-set -e
-sudo mv {REMOTE_TMP}/*.nmconnection {REMOTE_DEST}/
-sudo chmod 600 {REMOTE_DEST}/*.nmconnection
-sudo systemctl restart NetworkManager
-nmcli -t -f NAME connection show
-"""
+# Move files
+run(f'ssh {REMOTE_USER}@{REMOTE_IP} "sudo mv {REMOTE_TMP}/*.nmconnection {REMOTE_DEST}/"')
 
-    run(f'ssh {REMOTE_USER}@{REMOTE_IP} "{remote_script}"')
+# Fix permissions
+run(f'ssh {REMOTE_USER}@{REMOTE_IP} "sudo chmod 600 {REMOTE_DEST}/*.nmconnection"')
+
+# Verify
+run(f'ssh {REMOTE_USER}@{REMOTE_IP} "nmcli -t -f NAME connection show"')
+
 
     status("Deployment successful.")
 
